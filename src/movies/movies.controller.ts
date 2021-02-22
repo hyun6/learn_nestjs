@@ -29,10 +29,7 @@ export class MoviesController {
 
     @Patch(':id')
     update(@Param('id') movieId: string, @Body() movieData) {
-        return {
-            movieId,
-            ...movieData
-        };
+        this.moviesService.update(movieId, movieData);
     }
 
     @Delete(':id')
