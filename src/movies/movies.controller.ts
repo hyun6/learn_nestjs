@@ -6,36 +6,35 @@ import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
+  constructor(private readonly moviesService: MoviesService) {}
 
-    constructor(private readonly moviesService: MoviesService) { }
+  @Get()
+  getAll(): Movie[] {
+    return this.moviesService.getAll();
+  }
 
-    @Get()
-    getAll(): Movie[] {
-        return this.moviesService.getAll();
-    }
+  @Get('search')
+  search(@Query('year') searchingYear: string) {
+    return `searching year: ${searchingYear}`;
+  }
 
-    @Get('search')
-    search(@Query('year') searchingYear: string) {
-        return `searching year: ${searchingYear}`;
-    }
+  @Get(':id')
+  getOne(@Param('id') movieId: number): Movie {
+    return this.moviesService.getOne(movieId);
+  }
 
-    @Get(':id')
-    getOne(@Param('id') movieId: number): Movie {
-        return this.moviesService.getOne(movieId);
-    }
+  @Post()
+  create(@Body() movieData: CreateMovieDto) {
+    return this.moviesService.create(movieData);
+  }
 
-    @Post()
-    create(@Body() movieData: CreateMovieDto) {
-        return this.moviesService.create(movieData);
-    }
+  @Patch(':id')
+  update(@Param('id') movieId: number, @Body() movieData: UpdateMovieDto) {
+    this.moviesService.update(movieId, movieData);
+  }
 
-    @Patch(':id')
-    update(@Param('id') movieId: number, @Body() movieData: UpdateMovieDto) {
-        this.moviesService.update(movieId, movieData);
-    }
-
-    @Delete(':id')
-    delete(@Param('id') movieId: number) {
-        return this.moviesService.deleteOne(movieId);
-    }
+  @Delete(':id')
+  delete(@Param('id') movieId: number) {
+    return this.moviesService.deleteOne(movieId);
+  }
 }
